@@ -3,10 +3,27 @@ import rasterio
 import srtm4
 from typing import List, Tuple, Union
 import warnings
+import rpc_model
+import utils
+from rpc_model import RPCModel
 from rpc_model import rpc_from_geotiff
+from rpc_model import rpc_from_rpc_file
 
 warnings.filterwarnings("ignore",
     category=rasterio.errors.NotGeoreferencedWarning)
+
+class NotGeoreferencedError(Exception):
+    """
+    Custom rpcm Exception.
+    """
+    pass
+
+
+class NoSRTMWarning(Warning):
+    """
+    Custom rpcm warning raised when no SRTM altitude is available.
+    """
+    pass
 
 def projection(img_path: str, lon: Union[float, List[float]], lat: Union[float, List[float]], z: Union[float, List[float], None]=None, crop_path: Union[str, None]=None, svg_path: Union[str, None]=None,
                verbose=False) -> Tuple[Union[float, List[float]], Union[float, List[float]]]:
