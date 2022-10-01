@@ -1,5 +1,6 @@
 from typing import Dict
 from xml.etree import Element, ElementTree
+from urllib.request import urlopen
 
 def parse_coeff(element, prefix: str, indices: range) -> str:
     """ helper function"""
@@ -254,8 +255,12 @@ def read_rpc_file(rpc_file: str):
         dictionary read from the RPC file, or an empty dict if fail
     """
 
-    with open(rpc_file) as f:
-        rpc_content = f.read()
+    if (rpc_file.startswith('http')):
+        with urlopen(rpc_file) as f:
+            rpc_content = f.read()
+    else:
+        with open(rpc_file) as f:
+            rpc_content = f.read()
 
     if rpc_file.lower().endswith('xml'):
         try:
